@@ -19,6 +19,10 @@ public class MainActivity extends ActionBarActivity {
         Spinner spinner = (Spinner) findViewById(R.id.spinJobs);
 // Create an ArrayAdapter using the string array and a default spinner layout
 
+
+        //need to call web service to populate dropdown
+
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spinJobs, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears

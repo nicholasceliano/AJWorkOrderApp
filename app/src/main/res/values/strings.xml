@@ -3,9 +3,9 @@
 
     <string name="action_settings">Settings</string>
     <string name="imgLogo">AJCelianoLogo</string>
-    <string name="lblJob">Job</string>
-    <string name="lblSubject">Subject</string>
-    <string name="lblDescription">Description</string>
+    <string name="lblJob">Job:</string>
+    <string name="lblSubject">Subject:</string>
+    <string name="lblDescription">Description:</string>
     <string-array name="spinJobs">
         <item>Mercury</item>
         <item>Venus</item>
