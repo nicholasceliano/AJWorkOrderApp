@@ -1,11 +1,20 @@
 package com.ajceliano.ajworkorderapp;
 
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -21,7 +30,8 @@ public class MainActivity extends ActionBarActivity {
 
 
         //need to call web service to populate dropdown
-
+        String url = "http://nec:81/api/WorkOrders";
+        new HttpGetRequest(this).execute(url);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spinJobs, android.R.layout.simple_spinner_item);
@@ -31,7 +41,6 @@ public class MainActivity extends ActionBarActivity {
         spinner.setAdapter(adapter);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,5 +62,33 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+}
+
+
+class HttpGetRequest extends AsyncTask<String,Void,String> {
+    private MainActivity mA;
+
+    public HttpGetRequest(MainActivity mainActivity) {  // can take other params if needed
+        this.mA = mainActivity;
+    }
+
+    protected String doInBackground(String... url) {
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpResponse response = httpClient.execute(new HttpGet(url[0]));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            response.getEntity().writeTo(out);
+            String respVal = out.toString();
+            out.close();
+            return respVal;
+        } catch (Exception e) {
+            return "failed";
+        }
+    }
+    protected void onPostExecute(String result) {
+        EditText txtDes = (EditText) mA.findViewById(R.id.txtDescription);
+        txtDes.setText(result);
     }
 }
