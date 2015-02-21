@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:id="@+id/appLayout"
+    android:clickable="false">
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:id="@+id/imgLogo"
+        android:contentDescription="@string/imgLogo"
+        android:src="@mipmap/ajcelianologo"
+        android:nestedScrollingEnabled="false"
+        android:layout_alignParentEnd="false"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="90dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/lblJob"
+        android:id="@+id/lblJob"
+        android:layout_below="@+id/imgLogo"
+        android:layout_toLeftOf="@+id/txtSubject"
+        android:layout_toStartOf="@+id/txtSubject" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinJobs"
+        android:layout_below="@+id/imgLogo"
+        android:layout_toRightOf="@+id/lblJob"  />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/lblSubject"
+        android:id="@+id/lblSubject"
+        android:layout_below="@+id/lblJob"
+        android:layout_alignRight="@+id/lblDescription"
+        android:layout_alignEnd="@+id/lblDescription" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtSubject"
+        android:layout_below="@+id/lblJob"
+        android:layout_toRightOf="@+id/lblDescription"
+        android:minWidth="480dp" />
+
+    <TextView
+        android:text="@string/lblDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/lblDescription"
+        android:layout_below="@+id/lblSubject" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtDescription"
+        android:layout_below="@+id/lblSubject"
+        android:layout_toRightOf="@+id/lblDescription"
+        android:minWidth="480dp"
+        android:minHeight="400dp" />
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/btnSubmitWorkOrder"
+        android:layout_marginRight="42dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginBottom="42dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
