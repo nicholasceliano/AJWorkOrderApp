@@ -1,13 +1,17 @@
 package com.ajceliano.ajworkorderapp;
 
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.ajceliano.ajworkorderapp.Obj.NewWorkOrder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,27 +23,35 @@ import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends ActionBarActivity {
 
+    public MainActivity mA;
+    private String android_ID;
+    private static String baseAPI_URI = "http://nec:81/api/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mA = this;
         setContentView(R.layout.activity_main);
+        android_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
+        PopulateJobs();
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinJobs);
-// Create an ArrayAdapter using the string array and a default spinner layout
+        findViewById(R.id.btnSubmitWorkOrder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText subject = (EditText)findViewById(R.id.txtSubject);
+                EditText desc = (EditText)findViewById(R.id.txtDescription);
 
+                NewWorkOrder wO = new NewWorkOrder();
+                wO.SetJobID(1);
+                wO.SetDeviceGUID(android_ID);
+                wO.SetSubject(subject.getText().toString());
+                wO.SetDescription(desc.getText().toString());
 
-        //need to call web service to populate dropdown
-        String url = "http://nec:81/api/WorkOrders";
-        new HttpGetRequest(this).execute(url);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.spinJobs, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
+                new SubmitNewWorkOrder(mA, baseAPI_URI + "WorkOrders").execute(wO);
+            }
+        });
     }
 
     @Override
@@ -63,32 +75,8 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-}
 
-
-class HttpGetRequest extends AsyncTask<String,Void,String> {
-    private MainActivity mA;
-
-    public HttpGetRequest(MainActivity mainActivity) {  // can take other params if needed
-        this.mA = mainActivity;
-    }
-
-    protected String doInBackground(String... url) {
-        try {
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpResponse response = httpClient.execute(new HttpGet(url[0]));
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-            response.getEntity().writeTo(out);
-            String respVal = out.toString();
-            out.close();
-            return respVal;
-        } catch (Exception e) {
-            return "failed";
-        }
-    }
-    protected void onPostExecute(String result) {
-        EditText txtDes = (EditText) mA.findViewById(R.id.txtDescription);
-        txtDes.setText(result);
+    public void PopulateJobs() {
+        new HttpGetRequest(this).execute(baseAPI_URI + "Jobs");
     }
 }
