@@ -5,12 +5,12 @@ package com.ajceliano.ajworkorderapp.Obj;
  */
 
 public class RefData{
-    private int ID;
+    private Integer ID;
     private String Value;
     private Boolean Enabled;
 
     ////Getters
-    public int GetID(){
+    public Integer GetID(){
         return this.ID;
     }
     public String GetValue(){
@@ -21,7 +21,7 @@ public class RefData{
     }
 
     ////Setters
-    public void SetID(int id){
+    public void SetID(Integer id){
         this.ID = id;
     }
     public void SetValue(String val){

@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         android:id="@+id/imgLogo"
         android:contentDescription="@string/imgLogo"
-        android:src="@mipmap/ajcelianologo"
+        android:src="@drawable/abc_textfield_search_default_mtrl_alpha"
         android:nestedScrollingEnabled="false"
         android:layout_marginTop="-10dp"
         android:layout_marginBottom="90dp"/>

@@ -23,22 +23,27 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by Nick on 2/22/2015.
  */
-class HttpGetRequest extends AsyncTask<String,Void,String> {
-    private MainActivity mA;
 
-    public HttpGetRequest(MainActivity mainActivity) {  // can take other params if needed
+class GetReferenceData extends AsyncTask<String,Void,String> {
+    private MainActivity mA;
+    private String webServiceCallExtension;
+
+    public GetReferenceData(MainActivity mainActivity) {  // can take other params if needed
         this.mA = mainActivity;
     }
 
-    protected String doInBackground(String... url) {
+    protected String doInBackground(String... webAPIExtension) {
+        this.webServiceCallExtension = webAPIExtension[0];
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpResponse response = httpClient.execute(new HttpGet(url[0]));
+            HttpResponse response = httpClient.execute(new HttpGet(mA.baseAPI_URI + this.webServiceCallExtension));
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             response.getEntity().writeTo(out);
@@ -50,14 +55,22 @@ class HttpGetRequest extends AsyncTask<String,Void,String> {
         }
     }
     protected void onPostExecute(String result) {
-        String refDataJSON = "{ refData:" + FormatIncomingNET_JSON(result) + " }";
+        try{
+            String refDataJSON = "{ refData:" + FormatIncomingNET_JSON(result) + " }";
+            Gson gson = new Gson();
+            RefData_List data = gson.fromJson(refDataJSON, RefData_List.class);
+            List<RefData> d = data.GetRefData();
 
-        Gson gson = new Gson();
-        RefData_List data = gson.fromJson(refDataJSON, RefData_List.class);
-        List<RefData> d = data.GetRefData();
-
-        EditText txtDes = (EditText) mA.findViewById(R.id.txtDescription);
-        txtDes.setText(result);
+            if (webServiceCallExtension == "Jobs")
+                SpinnerFunctions.PopulateRefDataSpinnerValues(mA, R.id.spinJobs, d);//load into dropdown
+            //else if(webServiceCallExtension == "Users")
+            //else if (webServiceCallExtension == "Devices"
+        }
+        catch (Exception e){
+            String msg = "Load " + webServiceCallExtension + " Data Failed";
+            Toast toast = Toast.makeText(mA, msg, Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private String FormatIncomingNET_JSON(String json){
@@ -67,17 +80,17 @@ class HttpGetRequest extends AsyncTask<String,Void,String> {
 
 class SubmitNewWorkOrder extends AsyncTask<NewWorkOrder,Void,Boolean> {
     private MainActivity mA;
-    private String postURL;
+    private String webServCall;
 
-    public SubmitNewWorkOrder(MainActivity mainActivity, String url) {  // can take other params if needed
+    public SubmitNewWorkOrder(MainActivity mainActivity, String webServiceCallExtension) {  // can take other params if needed
         this.mA = mainActivity;
-        this.postURL = url;
+        this.webServCall = webServiceCallExtension;
     }
 
     protected Boolean doInBackground(NewWorkOrder... newWorkOrder) {
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost postReq = new HttpPost(postURL);
+            HttpPost postReq = new HttpPost(mA.baseAPI_URI + webServCall);
 
             NewWorkOrder wO = newWorkOrder[0];
             postReq.setHeader("Content-type", "application/json");
