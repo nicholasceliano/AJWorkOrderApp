@@ -1,16 +1,15 @@
-package com.ajceliano.ajworkorderapp;
+package com.ajceliano.ajworkorderapp.Helpers;
 
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.ajceliano.ajworkorderapp.GlobalVars;
 import com.ajceliano.ajworkorderapp.Obj.RefData;
+import com.ajceliano.ajworkorderapp.aNewWorkOrder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import java.util.List;
  */
 public class SpinnerFunctions {
 
-    public static void PopulateRefDataSpinnerValues(final MainActivity mA, final int spinnerID, final List<RefData> data) {
+    public static void PopulateRefDataSpinnerValues(final aNewWorkOrder mA, final int spinnerID, final List<RefData> data) {
         final Spinner s = (Spinner) mA.findViewById(spinnerID);
 
         List<String> valList = new ArrayList();
@@ -45,7 +44,7 @@ public class SpinnerFunctions {
                         RefData item = i.next();
                         if (item.GetValue() == sText) {
                             //if s.getId() == "spinJobs")
-                                mA.JobID = item.GetID();
+                                GlobalVars.newJobID = item.GetID();
                         }
                     }
                 }

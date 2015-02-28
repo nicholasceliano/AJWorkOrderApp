@@ -1,30 +1,26 @@
 package com.ajceliano.ajworkorderapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.ajceliano.ajworkorderapp.Helpers.Formatting;
+import com.ajceliano.ajworkorderapp.Helpers.SpinnerFunctions;
 import com.ajceliano.ajworkorderapp.Obj.NewWorkOrder;
 import com.ajceliano.ajworkorderapp.Obj.RefData;
 import com.ajceliano.ajworkorderapp.Obj.RefData_List;
+import com.ajceliano.ajworkorderapp.Obj.WorkOrder;
+import com.ajceliano.ajworkorderapp.Obj.WorkOrder_List;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,18 +28,18 @@ import java.util.List;
  */
 
 class GetReferenceData extends AsyncTask<String,Void,String> {
-    private MainActivity mA;
+    private aNewWorkOrder nWO;
     private String webServiceCallExtension;
 
-    public GetReferenceData(MainActivity mainActivity) {  // can take other params if needed
-        this.mA = mainActivity;
+    public GetReferenceData(aNewWorkOrder newWorkOrder) {  // can take other params if needed
+        this.nWO = newWorkOrder;
     }
 
     protected String doInBackground(String... webAPIExtension) {
         this.webServiceCallExtension = webAPIExtension[0];
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpResponse response = httpClient.execute(new HttpGet(mA.baseAPI_URI + this.webServiceCallExtension));
+            HttpResponse response = httpClient.execute(new HttpGet(GlobalVars.baseAPI_URI + this.webServiceCallExtension));
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             response.getEntity().writeTo(out);
@@ -56,43 +52,116 @@ class GetReferenceData extends AsyncTask<String,Void,String> {
     }
     protected void onPostExecute(String result) {
         try{
-            String refDataJSON = "{ refData:" + FormatIncomingNET_JSON(result) + " }";
+            String refDataJSON = "{ refData:" + Formatting.FormatIncomingNET_JSON(result) + " }";
             Gson gson = new Gson();
             RefData_List data = gson.fromJson(refDataJSON, RefData_List.class);
             List<RefData> d = data.GetRefData();
 
             if (webServiceCallExtension == "Jobs")
-                SpinnerFunctions.PopulateRefDataSpinnerValues(mA, R.id.spinJobs, d);//load into dropdown
+                SpinnerFunctions.PopulateRefDataSpinnerValues(nWO, R.id.spinJobs, d);//load into dropdown
             //else if(webServiceCallExtension == "Users")
             //else if (webServiceCallExtension == "Devices"
         }
         catch (Exception e){
             String msg = "Load " + webServiceCallExtension + " Data Failed";
-            Toast toast = Toast.makeText(mA, msg, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(nWO, msg, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
+}
 
-    private String FormatIncomingNET_JSON(String json){
-        return json.substring(0, json.length() -1).substring(1).replace("\\", "");
+class GetDeviceUser extends AsyncTask<String,Void,String> {
+    private aLoadingPage loadPage;
+
+    public GetDeviceUser(aLoadingPage LoadingPage) {
+        this.loadPage = LoadingPage;
+    }
+
+    protected String doInBackground(String... webAPIExtension) {
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpResponse response = httpClient.execute(new HttpGet(GlobalVars.baseAPI_URI + webAPIExtension[0] + "/" + GlobalVars.android_ID));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            response.getEntity().writeTo(out);
+            String respVal = out.toString();
+            out.close();
+            return respVal;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    protected void onPostExecute(String result) {
+        //set usrName Variable
+        GlobalVars.dUsr = Formatting.RemoveQuotes(Formatting.FormatIncomingNET_JSON(result));
+
+        //Pause for display image //this is retarded but w/e
+        try { Thread.sleep(1000); }
+        catch (InterruptedException e) { return; }
+
+        //Change program from loading screen
+        Intent intent=new Intent(loadPage,aWorkOrdersList.class);
+        loadPage.startActivity(intent);
+    }
+}
+
+class LoadUserWorkOrders extends AsyncTask<String,Void,String>{
+    private String webServiceCallExtension;
+    private aWorkOrdersList wOL;
+
+    public LoadUserWorkOrders(aWorkOrdersList workOrdersList) {
+        this.wOL = workOrdersList;
+    }
+
+    protected String doInBackground(String... webAPIExtension) {
+        this.webServiceCallExtension = webAPIExtension[0];
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpResponse response = httpClient.execute(new HttpGet(GlobalVars.baseAPI_URI + this.webServiceCallExtension + "/" + GlobalVars.android_ID));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            response.getEntity().writeTo(out);
+            String respVal = out.toString();
+            out.close();
+            return respVal;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    protected void onPostExecute(String result) {
+        try{
+            String workOrderJSON = "{ workOrders:" + Formatting.FormatIncomingNET_JSON(result) + " }";
+            Gson gson = new Gson();
+            WorkOrder_List data = gson.fromJson(workOrderJSON, WorkOrder_List.class);
+            List<WorkOrder> d = data.GetWorkOrder();
+
+            //TODO: populate list grid
+        }
+        catch (Exception e){
+            String msg = "Load " + webServiceCallExtension + " Data Failed";
+            Toast toast = Toast.makeText(wOL, msg, Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }
 
 class SubmitNewWorkOrder extends AsyncTask<NewWorkOrder,Void,Boolean> {
-    private MainActivity mA;
+    private aNewWorkOrder nWO;
     private String webServCall;
 
-    public SubmitNewWorkOrder(MainActivity mainActivity, String webServiceCallExtension) {  // can take other params if needed
-        this.mA = mainActivity;
+    public SubmitNewWorkOrder(aNewWorkOrder newWorkOrder, String webServiceCallExtension) {  // can take other params if needed
+        this.nWO = newWorkOrder;
         this.webServCall = webServiceCallExtension;
     }
 
     protected Boolean doInBackground(NewWorkOrder... newWorkOrder) {
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost postReq = new HttpPost(mA.baseAPI_URI + webServCall);
+            HttpPost postReq = new HttpPost(GlobalVars.baseAPI_URI + webServCall);
 
-            NewWorkOrder wO = newWorkOrder[0];
+            com.ajceliano.ajworkorderapp.Obj.NewWorkOrder wO = newWorkOrder[0];
             postReq.setHeader("Content-type", "application/json");
             postReq.setEntity(new StringEntity(String.format("{ JobID: %1$s, DeviceGUID: '%2$s', Subject: '%3$s', Description: '%4$s' }", wO.GetJobID(), wO.GetDeviceGUID(), wO.GetSubject(), wO.GetDescription())));
 
@@ -105,7 +174,7 @@ class SubmitNewWorkOrder extends AsyncTask<NewWorkOrder,Void,Boolean> {
     protected void onPostExecute(Boolean success) {
         //Tell the user that the request has been submitted successfully
         String msg = success ? "Work Order Submitted" : "Failed: Error Submitting";
-        Toast toast = Toast.makeText(mA, msg, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(nWO, msg, Toast.LENGTH_SHORT);
         toast.show();
     }
 }

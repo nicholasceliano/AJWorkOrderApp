@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AJWorkOrderApp</string>
+    <string name="app_name">AJ Work Orders</string>
 
     <string name="action_settings">Settings</string>
     <string name="imgLogo">AJCelianoLogo</string>
@@ -16,4 +16,7 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_loading_page">LoadingPage</string>
 </resources>
