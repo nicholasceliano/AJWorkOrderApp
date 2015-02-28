@@ -2,12 +2,14 @@ package com.ajceliano.ajworkorderapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.provider.Settings;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.ajceliano.ajworkorderapp.Obj.NewWorkOrder;
+import com.ajceliano.ajworkorderapp.Obj.WorkOrder;
+import com.google.gson.Gson;
 
 public class aNewWorkOrder extends Activity {
     public aNewWorkOrder mA;
@@ -19,26 +21,46 @@ public class aNewWorkOrder extends Activity {
         setContentView(R.layout.activity_new_work_order);
         //TODO: Fix App Launch Icon to the AJ
 
+        final EditText subject = (EditText) findViewById(R.id.txtSubject);
+        final EditText desc = (EditText) findViewById(R.id.txtDescription);
+        Spinner spinJobs = (Spinner) findViewById(R.id.spinJobs);
+        Integer woID = null;
+        String woLastUpdateBy = null;
 
-        //Populate page Data
-        new GetReferenceData(this).execute("Jobs");
+        //if Edit Work Order
+        Intent i = getIntent();
+        String woEditJSON = i.getStringExtra("woEdit");
+
+        if (woEditJSON != null){
+            WorkOrder woEdit = new Gson().fromJson(i.getStringExtra("woEdit"), WorkOrder.class);
+            //need to fill in controls with data
+            woID = woEdit.GetID();
+            new GetReferenceData(this, woEdit.GetJob()).execute("Jobs");
+            subject.setText(woEdit.GetSubject());
+            desc.setText(woEdit.GetDescription());
+            woLastUpdateBy = GlobalVars.dUsr;
+        } else{
+            //Populate Dropdown List
+            new GetReferenceData(this).execute("Jobs");
+        }
+        final Integer woIDFinal = woID;
+        final String woLastUpdateByFinal = woLastUpdateBy;
 
         //Button Listeners
         findViewById(R.id.btnSubmitWorkOrder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText subject = (EditText)findViewById(R.id.txtSubject);
-                EditText desc = (EditText)findViewById(R.id.txtDescription);
-
-                com.ajceliano.ajworkorderapp.Obj.NewWorkOrder wO = new com.ajceliano.ajworkorderapp.Obj.NewWorkOrder();
+                NewWorkOrder wO = new NewWorkOrder();
+                wO.SetID(woIDFinal);
                 wO.SetJobID(GlobalVars.newJobID);
                 wO.SetDeviceGUID(GlobalVars.android_ID);
                 wO.SetSubject(subject.getText().toString());
                 wO.SetDescription(desc.getText().toString());
+                wO.SetLastUpdatedBy(woLastUpdateByFinal);
 
                 new SubmitNewWorkOrder(mA, "WorkOrders").execute(wO);
 
-                Intent intent=new Intent(aNewWorkOrder.this,aWorkOrdersList.class);
+                Intent intent = new Intent(aNewWorkOrder.this, aWorkOrdersList.class);
                 startActivity(intent);
             }
         });

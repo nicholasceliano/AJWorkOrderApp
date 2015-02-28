@@ -30,9 +30,15 @@ import java.util.List;
 class GetReferenceData extends AsyncTask<String,Void,String> {
     private aNewWorkOrder nWO;
     private String webServiceCallExtension;
+    private String spinVal = null;
 
     public GetReferenceData(aNewWorkOrder newWorkOrder) {  // can take other params if needed
         this.nWO = newWorkOrder;
+    }
+
+    public GetReferenceData(aNewWorkOrder newWorkOrder, String spinnerValue) {  // can take other params if needed
+        this.nWO = newWorkOrder;
+        this.spinVal = spinnerValue;
     }
 
     protected String doInBackground(String... webAPIExtension) {
@@ -58,7 +64,7 @@ class GetReferenceData extends AsyncTask<String,Void,String> {
             List<RefData> d = data.GetRefData();
 
             if (webServiceCallExtension == "Jobs")
-                SpinnerFunctions.PopulateRefDataSpinnerValues(nWO, R.id.spinJobs, d);//load into dropdown
+                SpinnerFunctions.PopulateRefDataSpinnerValues(nWO, R.id.spinJobs, d, spinVal);//load into dropdown
             //else if(webServiceCallExtension == "Users")
             //else if (webServiceCallExtension == "Devices"
         }
@@ -135,9 +141,8 @@ class LoadUserWorkOrders extends AsyncTask<String,Void,String>{
             String workOrderJSON = "{ workOrders:" + Formatting.FormatIncomingNET_JSON(result) + " }";
             Gson gson = new Gson();
             WorkOrder_List data = gson.fromJson(workOrderJSON, WorkOrder_List.class);
-            List<WorkOrder> d = data.GetWorkOrder();
-
             //TODO: populate list grid
+            wOL.BuildWorkOrderTable(data.GetWorkOrder());
         }
         catch (Exception e){
             String msg = "Load " + webServiceCallExtension + " Data Failed";
@@ -163,7 +168,7 @@ class SubmitNewWorkOrder extends AsyncTask<NewWorkOrder,Void,Boolean> {
 
             com.ajceliano.ajworkorderapp.Obj.NewWorkOrder wO = newWorkOrder[0];
             postReq.setHeader("Content-type", "application/json");
-            postReq.setEntity(new StringEntity(String.format("{ JobID: %1$s, DeviceGUID: '%2$s', Subject: '%3$s', Description: '%4$s' }", wO.GetJobID(), wO.GetDeviceGUID(), wO.GetSubject(), wO.GetDescription())));
+            postReq.setEntity(new StringEntity(String.format("{ ID:%1$s, JobID: %2$s, DeviceGUID: '%3$s', Subject: '%4$s', Description: '%5$s', LastUpdatedBy: '%6$s' }", wO.GetID(), wO.GetJobID(), wO.GetDeviceGUID(), wO.GetSubject(), wO.GetDescription(), wO.GetLastUpdatedBy())));
 
             HttpResponse response = httpClient.execute(postReq);
             return true;

@@ -8,13 +8,18 @@ import java.util.Date;
  * Created by Nick on 2/22/2015.
  */
 public class NewWorkOrder {
-    private int JobID;
+    private Integer ID;
+    private Integer JobID;
     private String DeviceGUID;
     private String Subject;
     private String Description;
+    private String LastUpdatedBy;
 
     ////Setters
-    public void SetJobID(int val){
+    public void SetID(Integer val){
+        this.ID = val;
+    }
+    public void SetJobID(Integer val){
         this.JobID = val;
     }
     public void SetDeviceGUID(String val){
@@ -26,9 +31,15 @@ public class NewWorkOrder {
     public void SetDescription(String val){
         this.Description = val;
     }
+    public void SetLastUpdatedBy(String val){
+        this.LastUpdatedBy = val;
+    }
 
     ////Getters
-    public int GetJobID(){
+    public Integer GetID(){
+        return this.ID;
+    }
+    public Integer GetJobID(){
         return this.JobID;
     }
     public String GetDeviceGUID(){
@@ -37,7 +48,10 @@ public class NewWorkOrder {
     public String GetSubject(){
         return this.Subject;
     }
-    public  String GetDescription(){
+    public String GetDescription(){
         return this.Description;
+    }
+    public String GetLastUpdatedBy(){
+        return this.LastUpdatedBy;
     }
 }

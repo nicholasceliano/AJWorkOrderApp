@@ -1,10 +1,12 @@
 package com.ajceliano.ajworkorderapp.Obj;
 
+import java.io.Serializable;
+
 /**
  * Created by Nick on 2/28/2015.
  */
 public class WorkOrder {
-    private int ID;
+    private Integer ID;
     private String Job;
     private String SubmittedByFirstName;
     private String SubmittedByLastName;
@@ -16,7 +18,7 @@ public class WorkOrder {
     private String LastUpdatedDate;
 
     ////Setters
-    public void SetID(int val){
+    public void SetID(Integer val){
         this.ID = val;
     }
     public void SetJob(String val){
@@ -27,6 +29,9 @@ public class WorkOrder {
     }
     public void SetSubmittedByLastName(String val){
         this.SubmittedByLastName = val;
+    }
+    public void SetSubmittedDate(String val){
+        this.SubmittedDate = val;
     }
     public void SetSubject(String val){
         this.Subject = val;
@@ -45,7 +50,7 @@ public class WorkOrder {
     }
 
     ////Getters
-    public int GetID(){
+    public Integer GetID(){
         return this.ID;
     }
     public String GetJob(){
@@ -57,8 +62,14 @@ public class WorkOrder {
     public String GetSubmittedByLastName(){
         return this.SubmittedByLastName;
     }
+    public String GetSubmittedDate(){
+        return this.SubmittedDate;
+    }
     public String GetSubject(){
         return this.Subject;
+    }
+    public String GetDescription(){
+        return this.Description;
     }
     public Boolean GetReviewed(){
         return this.Reviewed;

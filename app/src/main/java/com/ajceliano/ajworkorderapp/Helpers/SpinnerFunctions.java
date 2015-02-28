@@ -7,6 +7,7 @@ import android.widget.Spinner;
 
 import com.ajceliano.ajworkorderapp.GlobalVars;
 import com.ajceliano.ajworkorderapp.Obj.RefData;
+import com.ajceliano.ajworkorderapp.R;
 import com.ajceliano.ajworkorderapp.aNewWorkOrder;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ import java.util.List;
  */
 public class SpinnerFunctions {
 
-    public static void PopulateRefDataSpinnerValues(final aNewWorkOrder mA, final int spinnerID, final List<RefData> data) {
-        final Spinner s = (Spinner) mA.findViewById(spinnerID);
+    public static void PopulateRefDataSpinnerValues(final aNewWorkOrder nWO, final int spinnerID, final List<RefData> data, String selectedVal) {
+        final Spinner s = (Spinner) nWO.findViewById(spinnerID);
 
         List<String> valList = new ArrayList();
         valList.add("Select Job");
@@ -29,9 +30,12 @@ public class SpinnerFunctions {
             valList.add(item.GetValue());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mA, android.R.layout.simple_spinner_item, valList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(nWO, android.R.layout.simple_spinner_item, valList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
+
+        if (selectedVal != null)
+            SetSpinnerValue(s, selectedVal);
 
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -56,7 +60,17 @@ public class SpinnerFunctions {
                 return;
             }
         });
-
+    }
+    
+    public static void SetSpinnerValue(Spinner s, String compareValue){
+        int index = 0;
+        for (int i=0;i<s.getCount();i++){
+            if (s.getItemAtPosition(i).toString().equalsIgnoreCase(compareValue)){
+                index = i;
+                break;
+            }
+        }
+        s.setSelection(index);
     }
 }
 
