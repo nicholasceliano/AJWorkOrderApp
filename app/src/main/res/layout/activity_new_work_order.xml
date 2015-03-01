@@ -15,7 +15,7 @@
         android:src="@mipmap/ajcelianologo"
         android:nestedScrollingEnabled="false"
         android:layout_marginTop="-10dp"
-        android:layout_marginBottom="90dp"/>
+        android:layout_marginBottom="50dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,16 +23,21 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/lblJob"
         android:id="@+id/lblJob"
+        android:layout_alignParentTop="true"
         android:layout_below="@+id/imgLogo"
-        android:layout_toLeftOf="@+id/txtSubject"
-        android:layout_toStartOf="@+id/txtSubject" />
+        android:layout_alignRight="@+id/lblSubject"
+        android:layout_alignEnd="@+id/lblSubject"
+        android:layout_marginTop="100dp" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinJobs"
-        android:layout_below="@+id/imgLogo"
-        android:layout_toRightOf="@+id/lblJob"  />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/lblJob"
+        android:layout_toRightOf="@id/lblJob"
+        android:spinnerMode="dropdown" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,17 +45,19 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/lblSubject"
         android:id="@+id/lblSubject"
-        android:layout_below="@+id/lblJob"
+        android:layout_below="@+id/imgLogo"
         android:layout_alignRight="@+id/lblDescription"
-        android:layout_alignEnd="@+id/lblDescription" />
+        android:layout_alignEnd="@+id/lblDescription"
+        android:layout_marginTop="32dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtSubject"
-        android:layout_below="@+id/lblJob"
-        android:layout_toRightOf="@+id/lblDescription"
-        android:minWidth="480dp" />
+        android:minWidth="480dp"
+        android:maxLines="1"
+        android:layout_alignTop="@+id/lblSubject"
+        android:layout_toRightOf="@+id/lblSubject" />
 
     <TextView
         android:text="@string/lblDescription"
@@ -58,28 +65,29 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/lblDescription"
-        android:layout_below="@+id/lblSubject" />
+        android:layout_below="@+id/lblSubject"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtDescription"
-        android:layout_below="@+id/lblSubject"
-        android:layout_toRightOf="@+id/lblDescription"
         android:minWidth="480dp"
-        android:minHeight="400dp" />
-
-
+        android:minLines="10"
+        android:maxLines="15"
+        android:scrollbars="vertical"
+        android:gravity="start|left|top"
+        android:layout_alignTop="@+id/lblDescription"
+        android:layout_toRightOf="@+id/lblDescription" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
         android:id="@+id/btnSubmitWorkOrder"
-        android:layout_marginRight="42dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="42dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/txtDescription"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

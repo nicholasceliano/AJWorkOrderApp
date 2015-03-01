@@ -52,7 +52,6 @@ public class aWorkOrdersList extends Activity {
         TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
         row.setLayoutParams(lp);
 
-
         //TODO: Need to fix all this formatting
         //add header row
         TextView htxtID = new TextView(this);
@@ -65,31 +64,18 @@ public class aWorkOrdersList extends Activity {
         htxtSubject.setWidth(50);
         TextView htxtReviewed = new TextView(this);
         htxtReviewed.setWidth(50);
-        TextView htxtLastUpdatedDate = new TextView(this);
-        htxtLastUpdatedDate.setWidth(50);
-        TextView htxtLastUpdatedBy = new TextView(this);
-        htxtLastUpdatedBy.setWidth(50);
-        TextView htxtBlankCol = new TextView(this);
-        htxtBlankCol.setWidth(50);
 
         htxtID.setText("ID");
         htxtJob.setText("Job");
         htxtSubmittedDate.setText("Submitted Date");
         htxtSubject.setText("Subject");
         htxtReviewed.setText("Reviewed Status");
-        htxtLastUpdatedDate.setText("Last Update Date");
-        htxtLastUpdatedBy.setText("Last Update By");
-        htxtLastUpdatedBy.setText("Last Update By");
-        htxtBlankCol.setText("");
 
         row.addView(htxtID);
         row.addView(htxtJob);
         row.addView(htxtSubmittedDate);
         row.addView(htxtSubject);
         row.addView(htxtReviewed);
-        row.addView(htxtLastUpdatedDate);
-        row.addView(htxtLastUpdatedBy);
-        row.addView(htxtBlankCol);
 
         tbl.addView(row, 0);
 
@@ -105,27 +91,18 @@ public class aWorkOrdersList extends Activity {
             TextView txtSubmittedDate = new TextView(this);
             TextView txtSubject = new TextView(this);
             TextView txtReviewed = new TextView(this);
-            TextView txtLastUpdatedDate = new TextView(this);
-            TextView txtLastUpdatedBy = new TextView(this);
-            ImageButton btnEdit = new ImageButton(this);
 
             txtID.setText(woItem.GetID().toString());
             txtJob.setText(woItem.GetJob());
             txtSubmittedDate.setText(woItem.GetSubmittedDate());
             txtSubject.setText(woItem.GetSubject());
             txtReviewed.setText(woItem.GetReviewed() == null ? "Not Reviewed" : woItem.GetReviewed().toString());
-            txtLastUpdatedDate.setText(woItem.GetLastUpdatedDate());
-            txtLastUpdatedBy.setText(woItem.GetLastUpdatedBy());
-            btnEdit.setImageResource(R.drawable.abc_btn_check_material);
 
             row2.addView(txtID);
             row2.addView(txtJob);
             row2.addView(txtSubmittedDate);
             row2.addView(txtSubject);
             row2.addView(txtReviewed);
-            row2.addView(txtLastUpdatedDate);
-            row2.addView(txtLastUpdatedBy);
-            row2.addView(btnEdit);
 
             row2.setOnClickListener(new View.OnClickListener() {
                 @Override

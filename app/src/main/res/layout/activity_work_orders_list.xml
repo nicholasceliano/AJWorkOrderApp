@@ -15,7 +15,8 @@
         android:layout_alignLeft="@+id/btnNewWorkOrder"
         android:layout_alignStart="@+id/btnNewWorkOrder"
         android:layout_marginTop="107dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center" />
 
     <Button
         android:layout_width="wrap_content"
@@ -24,7 +25,8 @@
         android:id="@+id/btnNewWorkOrder"
         android:layout_marginTop="32dp"
         android:layout_below="@+id/lblWelcomeMessage"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center" />
 
     <TableLayout
         android:layout_width="fill_parent"

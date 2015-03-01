@@ -3,6 +3,8 @@ package com.ajceliano.ajworkorderapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -70,6 +72,18 @@ public class aNewWorkOrder extends Activity {
             public void onClick(View view){
                 Intent intent=new Intent(aNewWorkOrder.this,aWorkOrdersList.class);
                 startActivity(intent);
+            }
+        });
+
+        ((EditText) findViewById(R.id.txtSubject)).addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void afterTextChanged(Editable s) {
+                for (int i = s.length(); i > 0; i--) {
+                    if (s.subSequence(i - 1, i).toString().equals("\n"))
+                        s.replace(i - 1, i, "");
+                }
+                String myTextString = s.toString();
             }
         });
     }
