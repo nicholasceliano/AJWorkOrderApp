@@ -3,8 +3,9 @@ package com.ajceliano.ajworkorderapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.ajceliano.ajworkorderapp.Obj.WorkOrder;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class aWorkOrdersList extends Activity {
@@ -25,6 +28,9 @@ public class aWorkOrdersList extends Activity {
 
         //Load label
         TextView welcomeMsg = (TextView)findViewById(R.id.lblWelcomeMessage);
+        final TextView lblAndroidID = (TextView)findViewById(R.id.lblAndroidID);
+        lblAndroidID.setText(GlobalVars.android_ID);
+
         if (GlobalVars.dUsr.equals("null")) {
             welcomeMsg.setText("Device must be linked to system before use");
             //Disable controls on the page
@@ -35,7 +41,22 @@ public class aWorkOrdersList extends Activity {
             //Load Page Data //Load the past 10 work orders
             new LoadUserWorkOrders(this).execute("WorkOrders");
 
-            //Button Listners
+            //Button Listeners
+            findViewById(R.id.btnSettings).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //make the android ID visible
+                    lblAndroidID.setVisibility(lblAndroidID.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+                }
+            });
+
+            findViewById(R.id.btnRefresh).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new LoadUserWorkOrders(wOL).execute("WorkOrders");
+                }
+            });
+
             findViewById(R.id.btnNewWorkOrder).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -48,41 +69,32 @@ public class aWorkOrdersList extends Activity {
 
     protected void BuildWorkOrderTable(List<WorkOrder> woList) {
         TableLayout tbl = (TableLayout) findViewById(R.id.tblWorkOrders);
-        TableRow row = new TableRow(this);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-        row.setLayoutParams(lp);
 
-        //TODO: Need to fix all this formatting
-        //add header row
-        TextView htxtID = new TextView(this);
-        htxtID.setWidth(50);
-        TextView htxtJob = new TextView(this);
-        htxtJob.setWidth(50);
-        TextView htxtSubmittedDate = new TextView(this);
-        htxtSubmittedDate.setWidth(50);
-        TextView htxtSubject = new TextView(this);
-        htxtSubject.setWidth(50);
-        TextView htxtReviewed = new TextView(this);
-        htxtReviewed.setWidth(50);
+        //Remove Rows if there is more than 1
+        if (tbl.getChildCount() > 1)
+            tbl.removeViews(1, tbl.getChildCount() - 1);
 
-        htxtID.setText("ID");
-        htxtJob.setText("Job");
-        htxtSubmittedDate.setText("Submitted Date");
-        htxtSubject.setText("Subject");
-        htxtReviewed.setText("Reviewed Status");
+        if (woList.size() == 0){
+            //Build friendly Row
+            TableRow r = new TableRow(this);
+            r.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT));
 
-        row.addView(htxtID);
-        row.addView(htxtJob);
-        row.addView(htxtSubmittedDate);
-        row.addView(htxtSubject);
-        row.addView(htxtReviewed);
+            TextView txtNoResults = new TextView(this);
+            txtNoResults.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, .09f));
+            FormatTextView(txtNoResults);
+            txtNoResults.setBackground(getResources().getDrawable(R.drawable.table_row_odd_background));
+            txtNoResults.setGravity(Gravity.CENTER);
 
-        tbl.addView(row, 0);
+            txtNoResults.setText("No Work Orders Pending");
+
+            r.addView(txtNoResults);
+            tbl.addView(r, 1);
+        }
 
         for (int i = 0; i < woList.size(); i++ ) {
-            TableRow row2 = new TableRow(this);
-            TableRow.LayoutParams lp2 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-            row2.setLayoutParams(lp2);
+            Integer rowNum = i + 1;
+            TableRow r = new TableRow(this);
+            r.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT));
 
             final WorkOrder woItem = woList.get(i);
 
@@ -92,29 +104,71 @@ public class aWorkOrdersList extends Activity {
             TextView txtSubject = new TextView(this);
             TextView txtReviewed = new TextView(this);
 
+            txtID.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, .09f));
+            txtJob.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, .25f));
+            txtSubmittedDate.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, .2f));
+            txtSubject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, .25f));
+            txtReviewed.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, .21f));
+
+            FormatTextView(txtID);
+            FormatTextView(txtJob);
+            FormatTextView(txtSubmittedDate);
+            FormatTextView(txtSubject);
+            FormatTextView(txtReviewed);
+
+            if (rowNum % 2 == 0) {
+                txtID.setBackground(getResources().getDrawable(R.drawable.table_row_even_background));
+                txtJob.setBackground(getResources().getDrawable(R.drawable.table_row_even_background));
+                txtSubmittedDate.setBackground(getResources().getDrawable(R.drawable.table_row_even_background));
+                txtSubject.setBackground(getResources().getDrawable(R.drawable.table_row_even_background));
+                txtReviewed.setBackground(getResources().getDrawable(R.drawable.table_row_even_background));
+            } else{
+                txtID.setBackground(getResources().getDrawable(R.drawable.table_row_odd_background));
+                txtJob.setBackground(getResources().getDrawable(R.drawable.table_row_odd_background));
+                txtSubmittedDate.setBackground(getResources().getDrawable(R.drawable.table_row_odd_background));
+                txtSubject.setBackground(getResources().getDrawable(R.drawable.table_row_odd_background));
+                txtReviewed.setBackground(getResources().getDrawable(R.drawable.table_row_odd_background));
+            }
+
+            String formattedSubDate;
+            try {
+                Date date = new SimpleDateFormat("MM/dd/yyyy HH:mm").parse(woItem.GetSubmittedDate());
+                formattedSubDate = new SimpleDateFormat("MMM dd, yyyy").format(date);
+            }
+            catch (Exception e){
+                formattedSubDate = woItem.GetSubmittedDate();
+            }
+
             txtID.setText(woItem.GetID().toString());
             txtJob.setText(woItem.GetJob());
-            txtSubmittedDate.setText(woItem.GetSubmittedDate());
+            txtSubmittedDate.setText(formattedSubDate);
             txtSubject.setText(woItem.GetSubject());
             txtReviewed.setText(woItem.GetReviewed() == null ? "Not Reviewed" : woItem.GetReviewed().toString());
 
-            row2.addView(txtID);
-            row2.addView(txtJob);
-            row2.addView(txtSubmittedDate);
-            row2.addView(txtSubject);
-            row2.addView(txtReviewed);
+            r.addView(txtID);
+            r.addView(txtJob);
+            r.addView(txtSubmittedDate);
+            r.addView(txtSubject);
+            r.addView(txtReviewed);
 
-            row2.setOnClickListener(new View.OnClickListener() {
+            r.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //opens a populated NewWorkOrders page
-                    Intent intent=new Intent(wOL,aNewWorkOrder.class);
+                    Intent intent = new Intent(wOL, aNewWorkOrder.class);
                     intent.putExtra("woEdit", new Gson().toJson(woItem));
                     wOL.startActivity(intent);
                 }
             });
 
-            tbl.addView(row2, i + 1);
+            tbl.addView(r, rowNum);
         }
+    }
+
+    private void FormatTextView(TextView tv) {
+        tv.setEllipsize(TextUtils.TruncateAt.END);
+        tv.setSingleLine(true);
+        tv.setTextSize(17);
+        tv.setPadding(5,5,5,5);
     }
 }

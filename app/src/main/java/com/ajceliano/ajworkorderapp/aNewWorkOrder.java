@@ -25,7 +25,6 @@ public class aNewWorkOrder extends Activity {
 
         final EditText subject = (EditText) findViewById(R.id.txtSubject);
         final EditText desc = (EditText) findViewById(R.id.txtDescription);
-        Spinner spinJobs = (Spinner) findViewById(R.id.spinJobs);
         Integer woID = null;
         String woLastUpdateBy = null;
 
@@ -83,7 +82,6 @@ public class aNewWorkOrder extends Activity {
                     if (s.subSequence(i - 1, i).toString().equals("\n"))
                         s.replace(i - 1, i, "");
                 }
-                String myTextString = s.toString();
             }
         });
     }

@@ -8,14 +8,27 @@
     android:clickable="false">
 
     <ImageView
-        android:layout_width="130dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="105dp"
         android:id="@+id/imgLogo"
         android:contentDescription="@string/imgLogo"
         android:src="@mipmap/ajcelianologo"
         android:nestedScrollingEnabled="false"
         android:layout_marginTop="-10dp"
         android:layout_marginBottom="50dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Work Order"
+        android:id="@+id/title"
+        android:width="450dp"
+        android:textSize="40dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:layout_toRightOf="@+id/imgLogo"
+        android:layout_toEndOf="@+id/imgLogo"
+        android:layout_marginTop="22dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,7 +40,7 @@
         android:layout_below="@+id/imgLogo"
         android:layout_alignRight="@+id/lblSubject"
         android:layout_alignEnd="@+id/lblSubject"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="120dp" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -48,7 +61,7 @@
         android:layout_below="@+id/imgLogo"
         android:layout_alignRight="@+id/lblDescription"
         android:layout_alignEnd="@+id/lblDescription"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="22dp" />
 
     <EditText
         android:layout_width="wrap_content"
