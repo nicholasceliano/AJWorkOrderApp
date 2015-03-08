@@ -143,7 +143,7 @@ public class aWorkOrdersList extends Activity {
             txtJob.setText(woItem.GetJob());
             txtSubmittedDate.setText(formattedSubDate);
             txtSubject.setText(woItem.GetSubject());
-            txtReviewed.setText(woItem.GetReviewed() == null ? "Not Reviewed" : woItem.GetReviewed().toString());
+            txtReviewed.setText(woItem.GetReviewed() == null ? "Not Reviewed" : "Rejected");
 
             r.addView(txtID);
             r.addView(txtJob);
