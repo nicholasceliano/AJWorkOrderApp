@@ -10,6 +10,7 @@ import com.ajceliano.ajworkorderapp.Obj.RefData;
 import com.ajceliano.ajworkorderapp.R;
 import com.ajceliano.ajworkorderapp.aNewWorkOrder;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +20,11 @@ import java.util.List;
  */
 public class SpinnerFunctions {
 
-    public static void PopulateRefDataSpinnerValues(final aNewWorkOrder nWO, final int spinnerID, final List<RefData> data, String selectedVal) {
+    public static void PopulateRefDataSpinnerValues(final aNewWorkOrder nWO, final int spinnerID, final List<RefData> data, String selectedVal, String listName) {
         final Spinner s = (Spinner) nWO.findViewById(spinnerID);
 
         List<String> valList = new ArrayList();
-        valList.add("Select Job");
+        valList.add("Select " + listName);
 
         for (Iterator<RefData> i = data.iterator(); i.hasNext(); ) {
             RefData item = i.next();
@@ -71,6 +72,44 @@ public class SpinnerFunctions {
             }
         }
         s.setSelection(index);
+    }
+
+
+    public static Number ConvertHoursWorkedToDecimal(String val){
+        if (val.equals(":30"))
+            return .5;
+        else if (val.equals("1:00"))
+            return 1;
+        else if (val.equals("1:30"))
+            return 1.5;
+        else if (val.equals("2:00"))
+            return 2;
+        else if (val.equals("2:30"))
+            return 2.5;
+        else if (val.equals("3:00"))
+            return 3;
+        else if (val.equals("3:30"))
+            return 3.5;
+        else if (val.equals("4:00"))
+            return 4;
+        else if (val.equals("4:30"))
+            return 4.5;
+        else if (val.equals("5:00"))
+            return 5;
+        else if (val.equals("5:30"))
+            return 5.5;
+        else if (val.equals("6:00"))
+            return 6;
+        else if (val.equals("6:30"))
+            return 6.5;
+        else if (val.equals("7:00"))
+            return 7;
+        else if (val.equals("7:30"))
+            return 7.5;
+        else if (val.equals("8:00"))
+            return 8;
+        else
+            return 0;
     }
 }
 

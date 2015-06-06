@@ -30,17 +30,42 @@
         android:layout_toEndOf="@+id/imgLogo"
         android:layout_marginTop="22dp" />
 
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/lblSite"
+        android:id="@+id/lblSite"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/imgLogo"
+        android:layout_alignRight="@+id/lblSubject"
+        android:layout_alignEnd="@+id/lblSubject"
+        android:layout_marginTop="120dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinSite"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/lblSite"
+        android:layout_toRightOf="@id/lblSite"
+        android:spinnerMode="dropdown" />
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/lblJob"
         android:id="@+id/lblJob"
-        android:layout_alignParentTop="true"
-        android:layout_below="@+id/imgLogo"
-        android:layout_alignRight="@+id/lblSubject"
-        android:layout_alignEnd="@+id/lblSubject"
-        android:layout_marginTop="120dp" />
+        android:layout_below="@+id/lblSite"
+        android:layout_alignRight="@+id/lblSite"
+        android:layout_alignEnd="@+id/lblSite"
+        android:layout_marginTop="22dp"/>
 
     <Spinner
         android:layout_width="wrap_content"
@@ -61,7 +86,7 @@
         android:layout_below="@+id/imgLogo"
         android:layout_alignRight="@+id/lblDescription"
         android:layout_alignEnd="@+id/lblDescription"
-        android:layout_marginTop="22dp" />
+        android:layout_marginTop="66dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -72,13 +97,69 @@
         android:layout_alignTop="@+id/lblSubject"
         android:layout_toRightOf="@+id/lblSubject" />
 
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/lblRegHours"
+        android:id="@+id/lblRegHours"
+        android:layout_below="@+id/lblSubject"
+        android:layout_alignRight="@+id/lblDescription"
+        android:layout_alignEnd="@+id/lblDescription"
+        android:layout_marginTop="22dp" />
+
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_marginRight="350dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinRegHours"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/lblRegHours"
+        android:layout_toRightOf="@id/lblRegHours"
+        android:spinnerMode="dropdown"
+        android:entries="@array/spinHours"
+        android:dropDownWidth="100dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/lblOvertimeHours"
+        android:id="@+id/lblOvertimeHours"
+        android:layout_below="@+id/lblRegHours"
+        android:layout_alignRight="@+id/lblDescription"
+        android:layout_alignEnd="@+id/lblDescription"
+        android:layout_marginTop="22dp" />
+
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_marginRight="350dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinOvertimeHours"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/lblOvertimeHours"
+        android:layout_toRightOf="@id/lblOvertimeHours"
+        android:spinnerMode="dropdown"
+        android:entries="@array/spinHours"
+        android:dropDownWidth="100dp" />
+
+
+
+
+
+
     <TextView
         android:text="@string/lblDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/lblDescription"
-        android:layout_below="@+id/lblSubject"
+        android:layout_below="@+id/lblOvertimeHours"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="32dp" />

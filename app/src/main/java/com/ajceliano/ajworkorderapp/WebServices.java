@@ -64,7 +64,10 @@ class GetReferenceData extends AsyncTask<String,Void,String> {
             List<RefData> d = data.GetRefData();
 
             if (webServiceCallExtension == "Jobs")
-                SpinnerFunctions.PopulateRefDataSpinnerValues(nWO, R.id.spinJobs, d, spinVal);//load into dropdown
+                SpinnerFunctions.PopulateRefDataSpinnerValues(nWO, R.id.spinJobs, d, spinVal, "Jobs");//load into dropdown
+
+            if (webServiceCallExtension == "Sites")
+                SpinnerFunctions.PopulateRefDataSpinnerValues(nWO, R.id.spinSite, d, spinVal, "Sites");
             //else if(webServiceCallExtension == "Users")
             //else if (webServiceCallExtension == "Devices"
         }
@@ -168,7 +171,8 @@ class SubmitNewWorkOrder extends AsyncTask<NewWorkOrder,Void,Boolean> {
 
             com.ajceliano.ajworkorderapp.Obj.NewWorkOrder wO = newWorkOrder[0];
             postReq.setHeader("Content-type", "application/json");
-            postReq.setEntity(new StringEntity(String.format("{ ID:%1$s, JobID: %2$s, DeviceGUID: '%3$s', Subject: '%4$s', Description: '%5$s', LastUpdatedBy: '%6$s' }", wO.GetID(), wO.GetJobID(), wO.GetDeviceGUID(), wO.GetSubject(), wO.GetDescription(), wO.GetLastUpdatedBy())));
+            String jsonPost = String.format("{ ID:%1$s, JobID: %2$s, SubmittedUserID: %3$s, DeviceGUID: '%4$s', RegWorkHours: %5$s, OvertimeWorkHours: %6$s, Subject: '%7$s', Description: '%8$s', LastUpdatedBy: '%9$s' }", wO.GetID(), wO.GetJobID(), 1, wO.GetDeviceGUID(), wO.GetRegWorkHours(), wO.GetOvertimeWorkHours(), wO.GetSubject(), wO.GetDescription(), wO.GetLastUpdatedBy());
+            postReq.setEntity(new StringEntity(jsonPost));
 
             HttpResponse response = httpClient.execute(postReq);
             return true;

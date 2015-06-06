@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.ajceliano.ajworkorderapp.Helpers.SpinnerFunctions;
 import com.ajceliano.ajworkorderapp.Obj.NewWorkOrder;
 import com.ajceliano.ajworkorderapp.Obj.WorkOrder;
 import com.google.gson.Gson;
@@ -25,6 +26,8 @@ public class aNewWorkOrder extends Activity {
 
         final EditText subject = (EditText) findViewById(R.id.txtSubject);
         final EditText desc = (EditText) findViewById(R.id.txtDescription);
+        final Spinner regHours = (Spinner) findViewById(R.id.spinRegHours);
+        final Spinner overTimeHours = (Spinner) findViewById(R.id.spinOvertimeHours);
         Integer woID = null;
         String woLastUpdateBy = null;
 
@@ -42,6 +45,7 @@ public class aNewWorkOrder extends Activity {
             woLastUpdateBy = GlobalVars.dUsr;
         } else{
             //Populate Dropdown List
+            new GetReferenceData(this).execute("Sites");
             new GetReferenceData(this).execute("Jobs");
         }
         final Integer woIDFinal = woID;
@@ -56,6 +60,8 @@ public class aNewWorkOrder extends Activity {
                 wO.SetJobID(GlobalVars.newJobID);
                 wO.SetDeviceGUID(GlobalVars.android_ID);
                 wO.SetSubject(subject.getText().toString());
+                wO.SetRegWorkHours(SpinnerFunctions.ConvertHoursWorkedToDecimal(regHours.getSelectedItem().toString()));
+                wO.SetOvertimeWorkHours(SpinnerFunctions.ConvertHoursWorkedToDecimal(overTimeHours.getSelectedItem().toString()));
                 wO.SetDescription(desc.getText().toString());
                 wO.SetLastUpdatedBy(woLastUpdateByFinal);
 

@@ -2,6 +2,7 @@ package com.ajceliano.ajworkorderapp.Obj;
 
 import android.util.EventLogTags;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -12,6 +13,8 @@ public class NewWorkOrder {
     private Integer JobID;
     private String DeviceGUID;
     private String Subject;
+    private Number RegWorkHours;
+    private Number OvertimeWorkHours;
     private String Description;
     private String LastUpdatedBy;
 
@@ -27,6 +30,12 @@ public class NewWorkOrder {
     }
     public void SetSubject(String val){
         this.Subject = val;
+    }
+    public void SetRegWorkHours(Number val){
+        this.RegWorkHours = val;
+    }
+    public void SetOvertimeWorkHours(Number val){
+        this.OvertimeWorkHours = val;
     }
     public void SetDescription(String val){
         this.Description = val;
@@ -47,6 +56,12 @@ public class NewWorkOrder {
     }
     public String GetSubject(){
         return this.Subject;
+    }
+    public Number GetRegWorkHours(){
+        return this.RegWorkHours;
+    }
+    public Number GetOvertimeWorkHours(){
+        return this.OvertimeWorkHours;
     }
     public String GetDescription(){
         return this.Description;
